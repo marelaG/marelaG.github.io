@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Maciej with love!</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        #cow-game-container {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 50px;
+        }
+        #cow-game {
+            width: 600px;
+            height: 200px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            margin: 20px auto;
+            background-color: #e0f7fa;
+            max-width: 90vw;
+        }
+        #cow {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top: 150px;
+            left: 50px;
+            font-size: 40px;
+            line-height: 40px;
+            z-index: 2;
+            transform: scaleX(-1);
+        }
+        .jump {
+            animation: jump 0.6s linear;
+        }
+        @keyframes jump {
+            0% { top: 150px; }
+            40% { top: 60px; }
+            50% { top: 50px; }
+            60% { top: 60px; }
+            100% { top: 150px; }
+        }
+        #obstacle {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top: 150px;
+            left: 100%;
+            font-size: 40px;
+            line-height: 40px;
+            z-index: 1;
+        }
+        .move {
+        animation: move 1.5s linear;
+        }
+        @keyframes move {
+            0% { left: 100%; }
+            100% { left: -50px; }
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="cow-game-container">
+        <h2>Pomóż szkockiej krówce zdobyć 200 punktów bo jest super sweet 🥺!</h2>
+        <div id="cow-score">Wynik: 0 / 200</div>
+        <div id="cow-game">
+            <div id="cow">🐂</div>
+            <div id="obstacle">🌵</div>
+        </div>
+        <p>Naciśnij <strong>Spację</strong> lub <strong>Dotknij ekranu</strong>, aby skoczyć!</p>
+    </div>
+
+    <div id="balloon-container" class="hidden"></div>
+    <div class="container hidden" id="balloon-ui">
+        <div class="birthday-card">
+            <h1 id="birthday-message" class="hidden">Wszystkiego najlepszego Pookie🥺!</h1>
+            <img id="cow-image" src="IMG_0912.jpeg" alt="Miniature Cow" class="hidden" style="max-width: 50%; border-radius: 10px; margin-top: 20px;">
+            <p id="cow-text" class="hidden" style="font-size: 1.0em; margin-top: 10px; color: #FFFFFF;">If I could I would get you a minature cow like this one :))</p>
+            <div id="counter" class="hidden">Przebite balony: 0 / 10</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; Devloped by Marcelinę Gancewską exclusively for Maciej <span class="hidden-name">Gancewski</span>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
