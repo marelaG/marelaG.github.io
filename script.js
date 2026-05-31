@@ -30,7 +30,11 @@ let clues;
 
 const gameContainer = document.querySelector('.game-container');
 
+const socket = io("https://YOUR_SERVER_URL");
 
+const roomId = "test-room";
+
+socket.emit("join-room", roomId);
 
 
 // Now that all DOM elements are declared, we can parse the JSON and use the buttons.
