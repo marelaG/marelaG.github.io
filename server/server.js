@@ -41,6 +41,13 @@ io.on("connection", (socket) => {
     socket.to(roomId).emit("game-update", state);
   });
 
+  socket.on("needle-move", ({ roomId, angle }) => {
+    if (rooms[roomId] && rooms[roomId].gameState) {
+      rooms[roomId].gameState.currentNeedleAngle = angle;
+    }
+    socket.to(roomId).emit("needle-move", angle);
+  });
+
   socket.on("disconnect", () => {
     console.log("Disconnected:", socket.id);
   });

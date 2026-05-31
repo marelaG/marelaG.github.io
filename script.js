@@ -62,6 +62,18 @@ document.addEventListener("DOMContentLoaded", () => {
 socket.on("room-update", (room) => {
     if (room.gameState && Object.keys(room.gameState).length > 0) {
         applyRemoteState(room.gameState);
+    } else if (currentRoomId) {
+        // First person in the room (or room is empty), push local state to initialize it
+        saveGameState();
+    }
+});
+
+socket.on("needle-move", (angle) => {
+    currentNeedleAngle = angle;
+    if (needle) {
+        requestAnimationFrame(() => {
+            needle.style.transform = `rotate(${currentNeedleAngle}deg)`;
+        });
     }
 });
 
@@ -1121,6 +1133,10 @@ function handleMove(e) {
     const clampedAngle = Math.max(-90, Math.min(90, angle));
     currentNeedleAngle = clampedAngle; // Update global angle variable
     requestAnimationFrame(updateNeedlePosition); // Request animation frame for smooth update
+    
+    if (currentRoomId && socket) {
+        socket.emit("needle-move", { roomId: currentRoomId, angle: currentNeedleAngle });
+    }
 }
 
 function updateNeedlePosition() {
