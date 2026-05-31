@@ -1,95 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Maciej with love!</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        #cow-game-container {
-            text-align: center;
-            font-family: 'Montserrat', sans-serif;
-            margin-top: 50px;
-        }
-        #cow-game {
-            width: 600px;
-            height: 200px;
-            border: 2px solid #333;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-            margin: 20px auto;
-            background-color: #e0f7fa;
-            max-width: 90vw;
-        }
-        #cow {
-            width: 40px;
-            height: 40px;
-            position: absolute;
-            top: 150px;
-            left: 50px;
-            font-size: 40px;
-            line-height: 40px;
-            z-index: 2;
-            transform: scaleX(-1);
-        }
-        .jump {
-            animation: jump 0.6s linear;
-        }
-        @keyframes jump {
-            0% { top: 150px; }
-            40% { top: 60px; }
-            50% { top: 50px; }
-            60% { top: 60px; }
-            100% { top: 150px; }
-        }
-        #obstacle {
-            width: 40px;
-            height: 40px;
-            position: absolute;
-            top: 150px;
-            left: 100%;
-            font-size: 40px;
-            line-height: 40px;
-            z-index: 1;
-        }
-        .move {
-        animation: move 1.5s linear;
-        }
-        @keyframes move {
-            0% { left: 100%; }
-            100% { left: -50px; }
-        }
-        .hidden {
-            display: none !important;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wavelength Game</title>
+    <meta name="description" content="Play Wavelength, the popular social deduction party game, online for free! Guess where the target is on the spectrum between two opposing concepts. Perfect for friends and family." />
+    <meta name="keywords" content="wavelength, board game, online game, party game, social deduction, free game, spectrum, guess, multiplayer" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HZ0TQPSV7S"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-HZ0TQPSV7S');
+    </script>
+
+    <!-- ADD ADSENSE SCRIPT RIGHT HERE -->
+    <script async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7738904226951665"
+        crossorigin="anonymous">
+    </script>
 </head>
+
 <body>
-    <div id="cow-game-container">
-        <h2>Pomóż szkockiej krówce zdobyć 200 punktów bo jest super sweet 🥺!</h2>
-        <div id="cow-score">Wynik: 0 / 200</div>
-        <div id="cow-game">
-            <div id="cow">🐂</div>
-            <div id="obstacle">🌵</div>
-        </div>
-        <p>Naciśnij <strong>Spację</strong> lub <strong>Dotknij ekranu</strong>, aby skoczyć!</p>
-    </div>
 
-    <div id="balloon-container" class="hidden"></div>
-    <div class="container hidden" id="balloon-ui">
-        <div class="birthday-card">
-            <h1 id="birthday-message" class="hidden">Wszystkiego najlepszego Pookie🥺!</h1>
-            <img id="cow-image" src="IMG_0912.jpeg" alt="Miniature Cow" class="hidden" style="max-width: 50%; border-radius: 10px; margin-top: 20px;">
-            <p id="cow-text" class="hidden" style="font-size: 1.0em; margin-top: 10px; color: #FFFFFF;">If I could I would get you a minature cow like this one :))</p>
-            <div id="counter" class="hidden">Przebite balony: 0 / 10</div>
+    <div id="howToPlayModal" class="modal">
+            <div class="modal-content">
+                <h2>How to Play Wavelength</h2>
+                <div class="modal-body">
+                    <ol>
+                        <li>A pair of opposing concepts will be displayed.</li>
+                        <li>The Psychic gives a clue where the target is located
+                            ON THE SPECTRUM between the two concepts</li>
+                        <ul>
+                            <li>For example between HOT and COLD</li>
+                            <li>The Psychic can say something like COFFEE!</li>
+                        </ul>
+                        <li>Now it’s up to the Psychic’s team to discuss the
+                            clue and decide where to turn the dial</li>
+                        <li>Click and drag the needle to set your guess.</li>
+                        <li>Click "Hide Target" to lock in your guess.</li>
+                        <li>Click "Reveal Target" to see how close you were.</li>
+                        <li>Scoring:
+                            <ul>
+                                <li><span class="score-5">5 points:</span> Bull's eye (dark blue)</li>
+                                <li><span class="score-3">3 points:</span> Close (yellow)</li>
+                                <li><span class="score-1">1 point:</span> Near (red)</li>
+                                <li><span class="score-0">0 points:</span> Miss</li>
+                            </ul>
+                        </li>
+                        <li>Click "Next Round" to continue or "New Game" to start over.</li>
+                    </ol>
+                </div>
+                <button class="close-button">Got it!</button>
+            </div>
         </div>
-    </div>
 
-    <div class="footer">
-        &copy; Devloped by Marcelinę Gancewską exclusively for Maciej <span class="hidden-name">Gancewski</span>
-    </div>
-    <script src="script.js"></script>
+    <div class="game-container">
+        <h1 class="title">Wavelength</h1>
+        <div id="topRightButtons">
+            <!-- NEW CHANGE LOG BUTTON -->
+            <button id="howToPlayButton" class="how-to-play">How to Play</button>
+            <button id="newGameButton" style="background-color: red; color: white">
+                New Game
+            </button>
+        </div>
+        <!-- NEW CHANGE LOG MODAL -->
+        <div id="changeLogModal" class="modal">
+            <div class="modal-content">
+                <h2>Wavelength Updates!</h2>
+                <div class="modal-body">
+                    <p>Recent changes include:</p>
+                    <ul>
+                        <li>Offline mode support and game state persistence on refresh.</li>
+                        <li>Various UX improvements for a smoother experience.</li>
+                        <li>Better touch screen support, especially for needle interaction.</li>
+                        <li>Improved layout and consistency across devices.</li>
+                    </ul>
+                    <p>Thank you to all the folks using this app around the world! I made this app to play Wavelength with my nieces while traveling around Europe in 2024 and am so excited to share it with everyone. I love hearing everyone's stories on using it. Enjoy!</p>
+                </div>
+                <button class="close-button">Awesome!</button>
+            </div>
+        </div>
+        <!-- Current Team Indicator -->
+        <div id="current-team-indicator" class="team-indicator">
+            <span class="team-indicator__icon"></span>
+            <span class="team-indicator__label"></span>
+            <span class="team-indicator__name"></span>
+        </div>
+        <h2 id="turn-indicator"></h2>
+        <div id="psychic-info-balloon" class="info-balloon">
+            <p>Think of a word to clue the spectrum. Then, 'Hide for Guessers'.</p>
+        </div>
+        <div id="score"></div> <!-- MOVED HERE -->
+
+        <div id="gameBoardAndCluesContainer">
+            <div class="board">
+                <div class="target-area" id="targetArea"></div>
+                <div class="needle-container" id="needleContainer">
+                    <div class="needle" id="needle"></div>
+                </div>
+            </div>
+            <div class="clues-container">
+                <div class="clue" id="leftClue"></div>
+                <div class="bidirectional-arrow"></div>
+                <div class="clue" id="rightClue"></div>
+            </div>
+            <div id="revealOverlay" class="reveal-overlay">
+                <p>Tap to show wavelength and start the game</p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="toggleButton">Hide Target</button>
+            <button id="skipQuestionButton" style="display: none;">Skip Question</button> <!-- NEW BUTTON -->
+            <button id="nextRoundButton" style="display: none;">Next Round</button> <!-- RENAMED TEXT & HIDDEN -->
+        </div>
+        <div id="totalScore">Total Score: 0</div> <!-- Kept original position for totalScore -->
+
+        <script src="script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./sw.js')
+                        .then(registration => {
+                            console.log('Service Worker registered: ', registration);
+                        })
+                        .catch(error => {
+                            console.error('Service Worker registration failed: ', error);
+                        });
+                });
+            }
+        </script>
+        <footer>
+            <p>&copy; 2024 Wavelength Game. All Rights Reserved.</p>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/terms.html">Terms of Service</a>
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/about.html">About</a>
+                <a href="/changelog.html">Change Log</a>
+            </nav>
+        </footer>
 </body>
+
 </html>
