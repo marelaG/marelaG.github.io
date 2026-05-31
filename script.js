@@ -36,14 +36,27 @@ let currentNeedleAngle = 0;
 let currentRoomId = null;
 const socket = io("http://localhost:3000");
 
-joinRoomButton.addEventListener("click", () => {
-    const newRoomId = prompt("Enter Room ID to join or create:");
-    if (newRoomId) {
-        currentRoomId = newRoomId;
-        socket.emit("join-room", currentRoomId);
-        roomDisplay.textContent = `(Room: ${currentRoomId})`;
-        joinRoomButton.style.display = "none";
+// The join room event listener needs to wait for DOM elements
+document.addEventListener("DOMContentLoaded", () => {
+    const joinRoomBtn = document.getElementById("joinRoomButton");
+    const roomDisp = document.getElementById("roomDisplay");
+    
+    if (joinRoomBtn) {
+        joinRoomBtn.addEventListener("click", () => {
+            const newRoomId = prompt("Enter Room ID to join or create:");
+            if (newRoomId) {
+                currentRoomId = newRoomId;
+                socket.emit("join-room", currentRoomId);
+                if (roomDisp) roomDisp.textContent = `(Room: ${currentRoomId})`;
+                joinRoomBtn.style.display = "none";
+            }
+        });
     }
+
+    // Modal declarations - ensure modal is declared before its close button
+    const modal = document.getElementById("howToPlayModal");
+    const howToPlayButton = document.getElementById("howToPlayButton");
+    const closeButton = modal.querySelector(".close-button");
 });
 
 socket.on("room-update", (room) => {
