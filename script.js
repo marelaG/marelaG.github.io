@@ -30,12 +30,49 @@ let clues;
 
 const gameContainer = document.querySelector('.game-container');
 
-const socket = io("https://YOUR_SERVER_URL");
+const joinRoomButton = document.getElementById("joinRoomButton");
+const roomDisplay = document.getElementById("roomDisplay");
+let currentNeedleAngle = 0;
+let currentRoomId = null;
+const socket = io("http://localhost:3000");
 
-const roomId = "test-room";
+joinRoomButton.addEventListener("click", () => {
+    const newRoomId = prompt("Enter Room ID to join or create:");
+    if (newRoomId) {
+        currentRoomId = newRoomId;
+        socket.emit("join-room", currentRoomId);
+        roomDisplay.textContent = `(Room: ${currentRoomId})`;
+        joinRoomButton.style.display = "none";
+    }
+});
 
-socket.emit("join-room", roomId);
+socket.on("room-update", (room) => {
+    if (room.gameState && Object.keys(room.gameState).length > 0) {
+        applyRemoteState(room.gameState);
+    }
+});
 
+socket.on("game-update", (state) => {
+    applyRemoteState(state);
+});
+
+function applyRemoteState(state) {
+    if (state.teams) teams = state.teams;
+    if (typeof state.currentTeamIndex !== 'undefined') currentTeamIndex = state.currentTeamIndex;
+    if (typeof state.currentClueIndex !== 'undefined') currentClueIndex = state.currentClueIndex;
+    if (typeof state.targetAngle !== 'undefined') targetAngle = state.targetAngle;
+    if (typeof state.isTargetVisible !== 'undefined') isTargetVisible = state.isTargetVisible;
+    if (typeof state.isPostGuessPhase !== 'undefined') isPostGuessPhase = state.isPostGuessPhase;
+    if (typeof state.currentNeedleAngle !== 'undefined') {
+        currentNeedleAngle = state.currentNeedleAngle;
+        if (needle) {
+            needle.style.transform = `rotate(${currentNeedleAngle}deg)`;
+        }
+    }
+
+    updateScoreDisplay();
+    reconstructGameUI(state);
+}
 
 // Now that all DOM elements are declared, we can parse the JSON and use the buttons.
 const cluesJSONString = `[
@@ -614,9 +651,14 @@ function saveGameState() {
         currentClueIndex: currentClueIndex,
         targetAngle: targetAngle, // Save target angle
         isTargetVisible: isTargetVisible, // Save target visibility state
-        isPostGuessPhase: isPostGuessPhase // Save post-guess phase state
+        isPostGuessPhase: isPostGuessPhase, // Save post-guess phase state
+        currentNeedleAngle: currentNeedleAngle
     };
     localStorage.setItem('wavelengthGameState', JSON.stringify(gameState));
+    
+    if (currentRoomId && socket) {
+        socket.emit("game-update", { roomId: currentRoomId, state: gameState });
+    }
 }
 
 function loadGameState() {
@@ -1043,8 +1085,6 @@ function showPointsAnimation(score) {
     }
 }
 
-let currentNeedleAngle = 0; // New global variable to store the needle's current angle
-
 // ... (rest of the file) ...
 
 function handleMove(e) {
@@ -1075,7 +1115,10 @@ function updateNeedlePosition() {
 }
 
 function handleEnd() {
-    isDragging = false;
+    if (isDragging) {
+        isDragging = false;
+        saveGameState(); // Sync final needle position
+    }
 }
 
 function hideNeedle() {
